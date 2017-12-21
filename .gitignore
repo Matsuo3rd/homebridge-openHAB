@@ -1,4 +1,18 @@
-# Dependency directory
-# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
-node_modules
+# Mac
+.DS_Store
+
+# Homebridge
+config.json
+homebridge
+
+# Node
+node_modules/
+npm-debug.log
+.node-version
+
+# Eclipse
+.project
+.settings/
+
+TODO
 .idea
