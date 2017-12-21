@@ -67,6 +67,7 @@ module.exports = function(homebridge) {
     Utility.addSupportTo(ItemFactory.ThermostatItem, ItemFactory.AbstractItem);
     Utility.addSupportTo(ItemFactory.GarageDoorOpenerItem, ItemFactory.AbstractItem);
     Utility.addSupportTo(ItemFactory.ColorItem, ItemFactory.AbstractItem);
+    Utility.addSupportTo(ItemFactory.HumiditySensorItem, ItemFactory.AbstractItem);
     
     homebridge.registerPlatform("homebridge-openhab", "openHAB", OpenHABPlatform);
 };
