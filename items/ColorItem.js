@@ -131,7 +131,7 @@ ColorItem.prototype.getOpenHabColorState = function () {
                 function (error, response, body) {
                     if (!error && response.statusCode === 200) {
 
-                        this.log("OpenHAB HTTP GET <" + this.name + "> - " + body);
+                        this.log.debug("OpenHAB HTTP GET <" + this.name + "> - " + body);
                         var state = this.parseState(body);
                         resolve(state);
 
@@ -162,7 +162,7 @@ ColorItem.prototype.setOpenHabColorState = function (data) {
                 },
                 function (error, response, body) {
                     if (!error && response.statusCode == 201) {
-                        this.log("OpenHAB HTTP RESP <" + this.name + "> - " + "OK");
+                        this.log.debug("OpenHAB HTTP RESP <" + this.name + "> - " + "OK");
                         resolve(body);
                     } else {
                         this.log.error("OpenHAB HTTP ERROR <" + this.name + "> - " + error);
@@ -191,7 +191,7 @@ ColorItem.prototype.setOpenHabPowerSwitchState = function (data) {
                 },
                 function (error, response, body) {
                     if (!error && response.statusCode == 201) {
-                        this.log("OpenHAB HTTP RESP <" + this.name + "> - " + "OK");
+                        this.log.debug("OpenHAB HTTP RESP <" + this.name + "> - " + "OK");
                         resolve(body);
                     } else {
                         this.log.error("OpenHAB HTTP ERROR <" + this.name + "> - " + error);

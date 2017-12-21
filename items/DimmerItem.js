@@ -57,7 +57,7 @@ DimmerItem.prototype.updateOpenHabState = function (value, type, callback, conte
         command = "" + value;
     }
 
-    this.log("iOS - send message to " + this.name + ": " + command);
+    this.log.debug("iOS - send message to " + this.name + ": " + command);
 
     request.post(
         this.url,
@@ -67,9 +67,9 @@ DimmerItem.prototype.updateOpenHabState = function (value, type, callback, conte
         },
         function (error, response, body) {
             if (!error && response.statusCode == 201) {
-                self.log("OpenHAB HTTP - response from " + self.name + ": " + body);
+                self.log.debug("OpenHAB HTTP - response from " + self.name + ": " + body);
             } else {
-                self.log("OpenHAB HTTP - error from " + self.name + ": " + error);
+                self.log.error("OpenHAB HTTP - error from " + self.name + ": " + error);
             }
             callback();
         }
@@ -90,7 +90,7 @@ DimmerItem.prototype.getOpenHabState = function () {
                 function (error, response, body) {
                     if (!error && response.statusCode === 200) {
 
-                        this.log("OpenHAB HTTP GET <" + this.name + "> - " + body);
+                        this.log.debug("OpenHAB HTTP GET <" + this.name + "> - " + body);
                         resolve(body);
 
                     } else {

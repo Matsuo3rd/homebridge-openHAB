@@ -140,13 +140,13 @@ GarageDoorOpenerItem.prototype.checkTargetDoorState = function(state) {
  */
 GarageDoorOpenerItem.prototype.getCurrentDoorState = function(callback) {
     var self = this;
-    this.log("iOS - request current door state state from " + this.itemCurrentDoorState.name + " (" + (self.name)+")");
+    this.log.debug("iOS - request current door state state from " + this.itemCurrentDoorState.name + " (" + (self.name)+")");
     request(self.itemCurrentDoorState.link + '/state?type=json', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            self.log("OpenHAB HTTP - response from " + self.itemCurrentDoorState.name + " (" + (self.name)+"): " + body);
+            self.log.debug("OpenHAB HTTP - response from " + self.itemCurrentDoorState.name + " (" + (self.name)+"): " + body);
             callback(undefined,self.checkCurrentDoorState(body));
         } else {
-            self.log("OpenHAB HTTP - error from " + self.itemCurrentDoorState.name + " (" + (self.name)+"): " + error);
+            self.log.error("OpenHAB HTTP - error from " + self.itemCurrentDoorState.name + " (" + (self.name)+"): " + error);
         }
     })
 };
@@ -157,13 +157,13 @@ GarageDoorOpenerItem.prototype.getCurrentDoorState = function(callback) {
  */
 GarageDoorOpenerItem.prototype.getTargetDoorState = function(callback) {
     var self = this;
-    this.log("iOS - request target door state state from " + this.itemTargetDoorState.name + " (" + (self.name)+")");
+    this.log.debug("iOS - request target door state state from " + this.itemTargetDoorState.name + " (" + (self.name)+")");
     request(self.itemTargetDoorState.link + '/state?type=json', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            self.log("OpenHAB HTTP - response from " + self.itemTargetDoorState.name + " (" + (self.name)+"): " + body);
+            self.log.debug("OpenHAB HTTP - response from " + self.itemTargetDoorState.name + " (" + (self.name)+"): " + body);
             callback(undefined,self.checkTargetDoorState(body));
         } else {
-            self.log("OpenHAB HTTP - error from " + self.itemTargetDoorState.name + " (" + (self.name)+"): " + error);
+            self.log.error("OpenHAB HTTP - error from " + self.itemTargetDoorState.name + " (" + (self.name)+"): " + error);
         }
     })
 };
@@ -181,13 +181,13 @@ GarageDoorOpenerItem.prototype.getObstructionDetected = function(callback) {
         return;
     }
 
-    this.log("iOS - request target door state state from " + this.itemObstructionDetectedState.name + " (" + (self.name)+")");
+    this.log.debug("iOS - request target door state state from " + this.itemObstructionDetectedState.name + " (" + (self.name)+")");
     request(self.itemObstructionDetectedState.link + '/state?type=json', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            self.log("OpenHAB HTTP - response from " + self.itemObstructionDetectedState.name + " (" + (self.name)+"): " + body);
+            self.log.debug("OpenHAB HTTP - response from " + self.itemObstructionDetectedState.name + " (" + (self.name)+"): " + body);
             callback(undefined,body === "ON");
         } else {
-            self.log("OpenHAB HTTP - error from " + self.itemObstructionDetectedState.name + " (" + (self.name)+"): " + error);
+            self.log.error("OpenHAB HTTP - error from " + self.itemObstructionDetectedState.name + " (" + (self.name)+"): " + error);
         }
     })
 };
@@ -246,7 +246,7 @@ GarageDoorOpenerItem.prototype.setTargetDoorState = function(value, callback){
         return;
     }
 
-    this.log("iOS - send message to " + this.itemTargetDoorState.name + ": " + value);
+    this.log.debug("iOS - send message to " + this.itemTargetDoorState.name + ": " + value);
     var command = value === this.homebridge.hap.Characteristic.TargetDoorState.OPEN ? 'ON' : 'OFF';
     request.post(
         this.itemTargetDoorState.link,
@@ -256,9 +256,9 @@ GarageDoorOpenerItem.prototype.setTargetDoorState = function(value, callback){
         },
         function (error, response, body) {
             if (!error && response.statusCode == 201) {
-                self.log("OpenHAB HTTP - response from " + self.itemTargetDoorState.name + ": " + body);
+                self.log.debug("OpenHAB HTTP - response from " + self.itemTargetDoorState.name + ": " + body);
             } else {
-                self.log("OpenHAB HTTP - error from " + self.itemTargetDoorState.name + ": " + error);
+                self.log.error("OpenHAB HTTP - error from " + self.itemTargetDoorState.name + ": " + error);
             }
             callback();
         }

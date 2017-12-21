@@ -71,7 +71,7 @@ RollershutterItem.prototype.setItem = function(value, callback) {
 
     this.startedPosition = this.currentPosition;
 
-    this.log("iOS - send message to " + this.name + ": " + value);
+    this.log.debug("iOS - send message to " + this.name + ": " + value);
 
     var command = 0;
     if (typeof value === 'boolean') {
@@ -87,10 +87,10 @@ RollershutterItem.prototype.setItem = function(value, callback) {
         },
         function (error, response, body) {
             if (!error && response.statusCode == 201) {
-                self.log("OpenHAB HTTP - response from " + self.name + ": " + body);
+                self.log.debug("OpenHAB HTTP - response from " + self.name + ": " + body);
                 self.targetPosition = parseInt(value);
             } else {
-                self.log("OpenHAB HTTP - error from " + self.name + ": " + error);
+                self.log.error("OpenHAB HTTP - error from " + self.name + ": " + error);
             }
             callback();
         }
@@ -98,30 +98,30 @@ RollershutterItem.prototype.setItem = function(value, callback) {
 };
 
 RollershutterItem.prototype.getItemPositionState = function(callback) {
-    this.log("iOS - request position state from " + this.name);
+    this.log.debug("iOS - request position state from " + this.name);
     this.log("Platform - response from " + this.name + ": " + this.positionState);
     callback(undefined,this.positionState);
 };
 
 RollershutterItem.prototype.getItemTargetPosition = function(callback) {
-    this.log("iOS - get target position state from " + this.name);
+    this.log.debug("iOS - get target position state from " + this.name);
     this.log("Platform - response from " + this.name + ": " + this.targetPosition);
     callback(undefined,this.targetPosition);
 };
 
 RollershutterItem.prototype.getItemCurrentPosition = function(callback) {
     var self = this;
-    this.log("iOS - request current position state from " + this.name);
+    this.log.debug("iOS - request current position state from " + this.name);
 
     request(this.url + '/state?type=json', function (error, response, body) {
         if (!error && response.statusCode == 200) {
 
-            self.log("OpenHAB HTTP - response from " + self.name + ": " +body);
+            self.log.debug("OpenHAB HTTP - response from " + self.name + ": " +body);
             self.currentPosition = parseInt(body);
             callback(undefined,parseInt(body));
 
         } else {
-            self.log("OpenHAB HTTP - error from " + self.name + ": " + error);
+            self.log.error("OpenHAB HTTP - error from " + self.name + ": " + error);
         }
     })
 };
