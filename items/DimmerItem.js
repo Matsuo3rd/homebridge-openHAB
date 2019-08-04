@@ -50,12 +50,30 @@ DimmerItem.prototype.updateOpenHabState = function (value, type, callback, conte
         return;
     }
 
-    var command = "";
     if (type === "Power") {
-        command = value ? 'ON' : 'OFF';
+
+        // ignore the power command if already on
+        this.getOpenHabState().then( function (state, currentValue) {
+
+            let command = state ? 'ON' : 'OFF';
+
+            if (state == true && Number(currentValue) > 0) {
+                // Ignore the command because the light is already on
+                callback()
+            }else {
+
+                this.sendCommand(command, callback)
+            }
+
+        }.bind(this, value));
+
     } else {
-        command = "" + value;
+        let command = String(value);
+        this.sendCommand(command, callback)
     }
+};
+
+DimmerItem.prototype.sendCommand = function (command, callback){
 
     this.log.debug("iOS - send message to " + this.name + ": " + command);
 
@@ -66,15 +84,15 @@ DimmerItem.prototype.updateOpenHabState = function (value, type, callback, conte
             headers: {'Content-Type': 'text/plain'}
         },
         function (error, response, body) {
-            if (!error && response.statusCode == 201) {
-                self.log.debug("OpenHAB HTTP - response from " + self.name + ": " + body);
+            if (!error && response.statusCode == 200) {
+                this.log.debug("OpenHAB HTTP - response from " + this.name + ": " + body);
             } else {
-                self.log.error("OpenHAB HTTP - error from " + self.name + ": " + error);
+                this.log.debug("OpenHAB HTTP - error from " + this.name + ": " + error);
             }
             callback();
-        }
+        }.bind(this)
     );
-};
+}
 
 
 /**
@@ -122,12 +140,11 @@ DimmerItem.prototype.getOpenHabBrightnessState = function (callback) {
 
 DimmerItem.prototype.setOpenHabPowerState = function (value, callback, context) {
 
-    if(value == false){
+    if(typeof value == "boolean"){
         this.updateOpenHabState(value, "Power", callback, context);
-    }else {
+    } else{
         callback();
     }
-
 };
 
 DimmerItem.prototype.setOpenHabBrightnessState = function (value, callback, context) {
